@@ -1,4 +1,4 @@
-# flask_motivational_bot/app.py
+# root/app.py
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import discord
@@ -12,7 +12,9 @@ import os
 
 # ----- FLASK SETUP -----
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = os.environ.get("QUOTE_BOT_SESSION_SECRET")
+if not app.secret_key:
+    raise RuntimeError("QUOTE_BOT_SESSION_SECRET must be set to a long random value.")
 
 # ----- LOGIN -----
 USERNAME = "admin"
@@ -274,4 +276,5 @@ load_config()
 
 # ----- RUN FLASK -----
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # No HTTPS or CSRF protection: do not expose the admin UI to a network.
+    app.run(host="127.0.0.1", port=5000, debug=False)
