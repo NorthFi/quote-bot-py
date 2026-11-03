@@ -1,3 +1,16 @@
+
+## Required security configuration
+
+The admin UI no longer ships with default credentials or a hard-coded Flask session secret. Configure these environment variables before starting the application:
+
+- `QUOTE_BOT_USERNAME`: administrator username
+- `QUOTE_BOT_PASSWORD`: unique, strong administrator password
+- `QUOTE_BOT_SESSION_SECRET`: long, randomly generated Flask signing secret
+
+For example, on Linux, supply these through a protected environment file or service manager (not a committed configuration file). The application fails at startup if any are missing. The development server now listens on `127.0.0.1:5000` with debugging disabled.
+
+**Remaining limitations:** The application lacks CSRF protection and rate limiting, and credentials are compared directly rather than through a password-hashing system. Keep it local-only. Changing the session secret invalidates existing sessions. Any previously used default admin password must be considered insecure.
+
 # 💡 Motivational Discord Bot – Flask Web Control Panel
 
 A self-hosted motivational quote bot for Discord with a web interface built using **Flask**.
